@@ -7,15 +7,17 @@ jobs:
             - image: circleci/node:7.10
         steps:
             - run:
+                cd ..
+            - run:
                 npm i
-            - checkout:
-                path: ~/AppiumTest
+            - run:
+                cd AppiumTest
             - run:
                 cordova platform add android
             - run:
                 cordova build android
-            - checkout: 
-                path: ~/yoyo
+            - run: 
+                cd ..
             - run:
                 npx wdio conf/android_BS.conf.js
 
