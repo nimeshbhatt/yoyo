@@ -8,7 +8,7 @@ jobs:
   build:
     docker:
         - image: circleci/node:7.10
-    working_directory: ../
+    working_directory: ../yoyo
     steps:
         - run:
             npm i
