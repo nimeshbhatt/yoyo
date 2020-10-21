@@ -1,27 +1,24 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+# Use a package of configuration called an orb.
 orbs:
-  node: circleci/node@3.0.0
-jobs:
-    test_path:
-        working_directory: ~/yoyo
-    build_path:
-        working_directory: ~/AppiumTest
+  # Declare a dependency on the welcome-orb
+  welcome: circleci/welcome-orb@0.4.1
+# Orchestrate or schedule a set of jobs
 workflows:
-    build:
-        Jobs:
-            - test_path
-            - run:
-                npm i
-            
-            - build_path
-            - run:
-                cordova platform add android
-            - run:
-                cordova build android
-      
-            - test_path
-            - run:
-                npx wdio conf/android_BS.conf.js
-        
-        
-
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
+    jobs:
+      - build:
+          - docker:
+              - image: circleci/node:7.10
+          - steps:
+              - run:
+                  cd /.
+              - run:
+                  npm i
+              - run: 
+                  cd AppiumTest
+              - run:
+                  cordova platform add android
