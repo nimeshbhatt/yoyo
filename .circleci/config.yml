@@ -6,20 +6,13 @@ jobs:
         docker: 
             - image: circleci/node:7.10
         steps:
-            - run:
-                cd ..
-            - run:
-                dir
-            - run:
-                npm i
-            - run:
-                cd AppiumTest
-            - run:
-                cordova platform add android
-            - run:
-                cordova build android
-            - run: 
-                cd ..
-            - run:
-                npx wdio conf/android_BS.conf.js
+            working_directory: ./yoyo
+            run: npm i
+            
+            working_directory: ./AppiumTest
+            run: cordova platform add android
+            run: cordova build android
+            
+            working_directory: ./yoyo
+            run: npx wdio conf/android_BS.conf.js
 
