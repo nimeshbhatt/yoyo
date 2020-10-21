@@ -1,0 +1,217 @@
+For Cordova setup in your system
+
+Windows:
+1. Setup Android SDK with environment path
+2. Setup Java SDK with environment path (Make sure to have Java SDK version 8 as Cordova works with Java SDK 8 only)
+3. Install Gradle 
+	- Download "binary-only" version of the latest release
+	- Unzip the file and place it in C:/ or any other location which is suitable for you
+	- Set the environment path variable "Path" with the gradle path (e.g. "C:\Gradle\gradle-6.6\bin")
+4. Install Node JS
+5. Install Cordova: npm install -g cordova
+	- Check cordova version with 'cordova -v' 
+
+iOS:
+You must require macOS laptop for iOS cordova build
+1. Setup iOS SDK (install xcode which facilitate almost all the requirements)
+2. Setup Java SDK with environment path (Make sure to have Java SDK version 8 as Cordova works with Kava SDK 8 only)
+3. In order to generate the ipa,you must require developer provisional profile
+
+
+
+For Cordova project creation
+
+1. Create new folder on your desier location in your system
+
+2. Open Git Bash on that location
+
+3. run the following commands one by one
+	- cordova create AppiumTest
+	- cd AppiumTest
+	- cordova platform add android  (for iOS: cordova platform add ios)
+4. Replace the contents of www/index.html with the code below. This will give us a simple app with a button which shows and hides a box below it. We can then test this button's functionality using Appium.
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>Appium Test</title>
+  </head>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('#showHideButton').addEventListener('click', function() {
+        document.querySelector('#textBox').classList.toggle('hidden');
+      });
+    });
+  </script>
+  <style type="text/css">
+    .hidden { display: none; }
+  </style>
+  <body>
+    <div class="app">
+      <button id="showHideButton">Show / hide box</button>
+      <p id="textBox">Hello! This is an Appium test.</p>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+  </body>
+</html>
+
+5. Save this file and then build the Android app:
+	- cordova build android (for iOS: cordova build ios)
+	
+Successful build will create an apk or ipa file to automate.
+
+
+
+
+For automation setup
+
+1. Run the following commands one by one
+	- npm init -y
+	- npm i appium --save-dev
+	- npm i appium-doctor --save-dev
+	- npm i wdio --save-dev
+	- npm i webdriverio --save-dev
+	- npm i @wdio/appium-service --save-dev
+	- npm i @wdio/jasmine-framework --save-dev
+	- npm i @wdio/cli --save-dev
+	- npx wdio config -y
+
+2. update your conf.js file with (update capabilities (if required), specs path (if required))
+
+exports.config = {
+  // 4723 is the default port for Appium
+  port: 4723,
+
+  // How much detail should be logged. The options are:
+  // 'silent', 'verbose', 'command', 'data', 'result', 'error'
+  logLevel: 'error',
+
+  // This defines which kind of device we want to test on, as well as how it should be
+  // configured.
+  capabilities: [{
+    // 'Android' or 'iOS'
+    platformName: 'Android',
+
+    // The version of the Android or iOS system
+    platformVersion: '9.0',
+
+    // For Android, Appium uses the first device it finds using "adb devices". So, this
+    // string simply needs to be non-empty.
+    // For iOS, this must exactly match the device name as seen in Xcode.
+    deviceName: 'any',
+
+    // Where to find the .apk or .ipa file to install on the device. The exact location
+    // of the file may change depending on your Cordova version.
+    app: './AppiumTest/platforms/android/app/build/outputs/apk/debug/app-debug.apk',
+
+    // By default, Appium runs tests in the native context. By setting autoWebview to
+    // true, it runs our tests in the Cordova context.
+    autoWebview: true,
+
+    // When set to true, it will not show permission dialogs, but instead grant all
+    // permissions automatically.
+    autoGrantPermissions: true
+  }],
+
+  // Where the files we are testing can be found.
+  specs: ['./test/specs/**/*.js'],
+
+  // Use the Appium plugin for Webdriver. Without this, we would need to run appium
+  // separately on the command line.
+  services: ['appium'],
+
+  // The reporter is what formats your test results on the command line. 'spec' lists
+  // the names of the tests with a tick or X next to them. See
+  // https://www.npmjs.com/search?q=wdio-reporter for a full list of reporters.
+  reporters: ['spec'],
+
+  // wdio will run your tests using the framework below. You can choose from several,
+  // much like the reporters. The full list is at https://www.npmjs.com/search?q=wdio-framework
+  framework: 'jasmine',
+
+  // By default, Jasmine times out within 10 seconds. This is not really enough time
+  // for us as it takes a while for Appium to get set up.
+  jasmineNodeOpts: {
+    defaultTimeoutInterval: 90000
+  }
+}
+
+
+
+
+Writing a test
+
+1. We are ready to write our tests! Create another folder inside tests called specs. Now, we can add our first test file, to be saved as test/specs/button.js.
+
+const DashBoardPage = require('../pageobjects/dashBoard.page')
+
+describe('Toggle Button', () => {
+
+	// As the name suggests, this runs before each test. It is a good place to set up common settings.
+	beforeEach(() => {
+		
+		// Wait up to 3 seconds for commands to work
+		browser.pause(3000)
+	});
+
+	// It is important that we run each test in isolation. The running of a previous test
+	// should not affect the next one. Otherwise, it could end up being very difficult to
+	// track down what is causing a test to fail.
+	afterEach(() => {
+
+		// Wait up to 1 seconds for commands to work
+		browser.pause(1000)
+	});
+
+	it('should hide the text label', () => {
+		
+		//following will click on Toggle button
+		DashBoardPage.click()
+
+		browser.pause(1000)
+		
+		//following will assert that Label is not getting displayed after toggle button click
+		expect(DashBoardPage.$textLabel).not.toBeDisplayed()
+	});
+	
+	it('should show the text label', () => {
+
+		//following will click on Toggle button
+		DashBoardPage.click()
+
+		browser.pause(1000)
+
+		//following will assert that Label is getting displayed after toggle button click
+		expect(DashBoardPage.$textLabel).toBeDisplayed()
+	});
+});
+
+2. Add page object file to be saved as test/pageobjects/dashBoard.page.js
+
+class DashBoardPage {
+
+    //following will fetch the toggle button element
+    get $toggleButton () {return $('#showHideButton')}
+    
+    //following will fetch the label element
+    get $textLabel () {return $('#textBox')}
+
+
+    //following method will click on toggle button
+    click (){
+        //following will click on toggle button
+        this.$toggleButton.click();
+    }
+}
+
+module.exports = new DashBoardPage();
+
+3. Update you Package.json file 
+
+"scripts": {
+    "appium": "appium",
+    "appium-doctor": "appium-doctor",
+    "test": "npx wdio conf/wdio.conf.js"
+},
