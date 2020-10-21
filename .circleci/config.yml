@@ -3,16 +3,22 @@ orbs:
   node: circleci/node@3.0.0
 jobs:
     build:
+        working_directory: ~/yoyo
         docker: 
             - image: circleci/node:7.10
         steps:
-            working_directory: ./yoyo
-            run: npm i
-            
-            working_directory: ./AppiumTest
-            run: cordova platform add android
-            run: cordova build android
-            
-            working_directory: ./yoyo
-            run: npx wdio conf/android_BS.conf.js
+            - run:
+                npm i
+        working_directory: ~/AppiumTest
+        steps:
+            - run:
+                cordova platform add android
+            - run:
+                cordova build android
+        working_directory: ~/yoyo
+        steps:
+            - run:
+                npx wdio conf/android_BS.conf.js
+        
+        
 
