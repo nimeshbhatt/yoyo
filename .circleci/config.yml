@@ -15,14 +15,7 @@ jobs:
   build_root:
     docker:
         - image: circleci/node:7.10
-    working_directory: ../root
-    steps:
-        - run:
-            ls
-  build_usr:
-    docker:
-        - image: circleci/node:7.10
-    working_directory: ../root
+    working_directory: ../usr
     steps:
         - run:
             ls
@@ -33,6 +26,3 @@ workflows:
         - build_root:
             requires:
                 - build
-        - build_usr:
-            requires:
-                - build_root
