@@ -8,13 +8,23 @@ jobs:
   build:
     docker:
         - image: circleci/node:7.10
+    working_directory: $CIRCLE_WORKING_DIRECTORY/
     steps:
         - run:
-            cd /.
-        - run:
             npm i
-        - run:
-            cd AppiumTest
+  build_project:
+    docker:
+        - image: circleci/node:7.10
+    working_directory: $CIRCLE_WORKING_DIRECTORY/AppiumTest
+    steps:
         - run:
             cordova platform add android
-
+        - run:
+            cordova build android
+workflows:
+  steps_to_follow:
+    jobs:
+        - build
+        - build_project:
+            requires:
+                - build
