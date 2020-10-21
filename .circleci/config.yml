@@ -2,21 +2,24 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 jobs:
-    build:
+    test_path:
         working_directory: ~/yoyo
-        docker: 
-            - image: circleci/node:7.10
-        steps:
+    build_path:
+        working_directory: ~/AppiumTest
+workflows:
+    build:
+        Jobs:
+            - test_path
             - run:
                 npm i
-        working_directory: ~/AppiumTest
-        steps:
+            
+            - build_path
             - run:
                 cordova platform add android
             - run:
                 cordova build android
-        working_directory: ~/yoyo
-        steps:
+      
+            - test_path
             - run:
                 npx wdio conf/android_BS.conf.js
         
