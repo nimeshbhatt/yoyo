@@ -12,6 +12,7 @@ jobs:
                 path: ~/AppiumTest
             - run:
                 cordova platform add android
+            - run:
                 cordova build android
             - checkout: 
                 path: ~/yoyo
