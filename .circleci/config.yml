@@ -9,6 +9,8 @@ jobs:
             - run:
                 cd ..
             - run:
+                dir
+            - run:
                 npm i
             - run:
                 cd AppiumTest
