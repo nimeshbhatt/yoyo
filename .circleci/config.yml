@@ -8,19 +8,17 @@ jobs:
   build:
     docker:
         - image: circleci/node:7.10
-    working_directory: /home
+    working_directory: /home/circleci
     steps:
         - run:
             ls
   build_project:
     docker:
         - image: circleci/node:7.10
-    working_directory: /home/AppiumTest
+    working_directory: /home/node
     steps:
         - run:
-            cordova platform add android
-        - run:
-            cordova build android
+            ls
 workflows:
   steps_to_follow:
     jobs:
