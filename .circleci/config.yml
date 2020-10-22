@@ -11,11 +11,7 @@ jobs:
         - run:
             npm i
         - run:
-            npm install -g cordova
-        - run:
-            cd AppiumTest/ && cordova platform add android
-        - run: 
-            cd AppiumTest/ && ls
+            npx wdio conf/android_BS.conf.js
 #   build_project:
 #     docker:
 #         - image: circleci/node:12.14.0
