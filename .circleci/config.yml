@@ -10,7 +10,11 @@ jobs:
         - image: circleci/node:7.10
     steps:
         - checkout
+#         - run:
+#             npm i
         - run:
+            cd AppiumTest
+        - run: 
             ls
 #   build_root:
 #     docker:
