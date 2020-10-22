@@ -17,7 +17,9 @@ jobs:
     steps:
         - checkout
         - run:
-            cd AppiumTest
+            command:
+                set +e
+                cd AppiumTest
         - run: 
             ls
 # workflows:
