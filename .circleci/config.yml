@@ -19,7 +19,7 @@ jobs:
         - run:
             ls
         - run: 
-            cd /AppiumTest $$ cordova platform add android
+            cd /AppiumTest && ls
 # workflows:
 #   node-tests:
 #     jobs:
