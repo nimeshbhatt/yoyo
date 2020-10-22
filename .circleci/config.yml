@@ -11,6 +11,8 @@ jobs:
         - run:
             npm i
         - run:
+            npm install -g cordova
+        - run:
             cd AppiumTest/ && cordova platform add android
         - run: 
             cd AppiumTest/ && ls
