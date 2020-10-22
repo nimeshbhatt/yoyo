@@ -12,8 +12,8 @@ jobs:
         - checkout
 #         - run:
 #             npm i
-        - run:
-            cd AppiumTest
+        - attach_workspace:
+            at AppiumTest
         - run: 
             ls
 #   build_root:
