@@ -13,7 +13,7 @@ jobs:
 #         - run:
 #             npm i
         - attach_workspace:
-            at AppiumTest
+            at: AppiumTest
         - run: 
             ls
 #   build_root:
