@@ -11,7 +11,9 @@ jobs:
         - run:
             npm i
         - run:
-            npx wdio conf/android_BS.conf.js
+            command: curl -u "nimeshbhatt2:f8roo18EznR2cyEc59mt" -X POST "https://api-cloud.browserstack.com/app-automate/upload" -F "url=https://www.dropbox.com/s/5mpeu9i3naspzv2/app-debug.apk?dl=1" -F "data={\"custom_id\":\"MyApp\"}"
+#         - run:
+#             npx wdio conf/android_BS.conf.js
 #   build_project:
 #     docker:
 #         - image: circleci/node:12.14.0
