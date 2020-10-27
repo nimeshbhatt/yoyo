@@ -9,7 +9,7 @@ jobs:
     steps:
         - checkout
         - run:
-            npm i cordova && cd AppiumTest/ && cordova platform add android
+            cd AppiumTest/ && npm i cordova && cordova platform add android
 #         - run:
 #             command: curl -u "nimeshbhatt2:f8roo18EznR2cyEc59mt" -X POST "https://api-cloud.browserstack.com/app-automate/upload" -F "url=https://www.dropbox.com/s/5mpeu9i3naspzv2/app-debug.apk?dl=1" -F "data={\"custom_id\":\"MyApp\"}"
 #         - run:
